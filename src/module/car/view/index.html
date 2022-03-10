@@ -1,0 +1,91 @@
+{% extends 'view/layout/base.html' %}
+
+{% block body %}
+<h1 class="title is-1">Índice de cars</h1>
+
+{% for error in errors %}
+
+<div class="notification is-danger">
+  {{error}}
+</div>
+{% endfor %}
+
+{% for message in messages %}
+<div class="notification is-success">
+  {{message}}
+</div>
+
+{% endfor %}
+<nav class="level-right">
+  <div class="level-item">
+    <a href="/car/create" class="button is-primary is-large">
+      <span class="icon"><i class="fas fa-futbol"></i></span>
+      <span>Agregar</span>
+    </a>
+  </div>
+</nav>
+
+<div class="table-container">
+  <table class="table is-striped is-hoverable">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Brand</th>
+        <th>Year</th>
+        <th>Kms</th>
+        <th>Photo</th>
+        <th>Color</th>
+        <th>air Conditioning</th>
+        <th>Passengers</th>
+        <th>Price/th>
+      </tr>
+    </thead>
+    <!-- el tfoot va después del thead en caso de que el contenido sea muy largo -->
+    <tfoot>
+      <tr>
+        <th colspan="14">
+          <div class="level-right">
+            <a href="/car/create" class="button is-primary is-large">
+              <span class="icon"><i class="fas fa-futbol"></i></span>
+              <span>Agregar</span>
+            </a>
+          </div>
+        </th>
+      </tr>
+    </tfoot>
+    <tbody>
+      {% for car in data.cars %}
+
+      <tr>
+        <td>{{car.id}}</td>
+        <td>{{car.brand}}</td>
+        <td>{{car.year}}</td>
+        <td>{{car.kms}}</td>
+        <td>
+          <figure class="image is-128x128">
+            <img src="/{{car.photo}}" width="128" height="128" />
+          </figure>
+
+        </td>
+        <td>{{car.color}</td>
+        <td>{{car.airConditioning}}</td>
+        <td>{{car.passengers}}</td>
+        <td>{{car.price}}</td>
+        <td>
+          <a href="/car/view/{{car.id}}"><span class="icon"><i class="fas fa-edit"></i></span>editar</a>
+        </td>
+        <td>
+          <a href="/car/delete/{{car.id}}" class="action-delete" data-id="{{car.id}}" data-name="{{car.name}}">
+            <span class="icon"><i class="fas fa-trash"></i></span>eliminar
+          </a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
+
+{% block footerScripts %}
+<script src="/public/js/car.index.js"></script>
+{% endblock %}

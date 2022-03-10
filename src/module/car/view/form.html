@@ -1,0 +1,111 @@
+{% extends 'view/layout/base.html' %}
+
+{% block body %}
+{% set car = data.car %}
+{% set areas = data.areas %}
+
+<div class="level-left">
+  <div class="level-item">
+    <h1 class="title is-1">
+      {{"Editando car ID: " + car.id if car.id else "Nuevo car"}}
+    </h1>
+  </div>
+  <div class="level-item">
+    <span><a class="button is-link" href="/car">Cancelar</a></span>
+  </div>
+</div>
+
+<hr />
+
+<form action="/car/save" method="POST" enctype="multipart/form-data">
+  <input type="hidden" name="id" value="{{car.id}}" readonly />
+
+  <div class="field">
+    <label class="label">Brand</label>
+    <div class="control has-icons-left">
+      <input class="input" type="text" name="brand" placeholder="Independiente" value="{{car.brand}}" />
+      <span class="icon is-small is-left">
+        <i class="fas fa-signature"></i>
+      </span>
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="label">Year</label>
+    <div class="control has-icons-left">
+      <input class="input" type="text" name="short-name" placeholder="Indep'te" value="{{car.shortName}}" />
+      <span class="icon is-small is-left">
+        <i class="fas fa-compress"></i>
+      </span>
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="label">Kms</label>
+    <div class="control has-icons-left">
+      <input class="input" type="text" name="tla" placeholder="IND" value="{{car.tla}}" />
+      <span class="icon is-small is-left">
+        <i class="fas fa-compress"></i>
+      </span>
+    </div>
+  </div>
+
+  <div class="field">
+    {% if car.photo %}
+    <img src="/{{car.photo}}" width="256" height="256" />
+    {% endif %}
+    <label class="label">Photo</label>
+    <div class="control has-icons-left">
+      <input class="input" type="file" name="photo" />
+      <span class=" icon is-small is-left">
+        <i class="fas fa-shield-alt"></i>
+      </span>
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="label">color</label>
+    <div class="control has-icons-left">
+      <input class="input" type="text" name="color" placeholder="Avenida Mitre 470, Avellaneda"
+        value="{{car.color}}" />
+      <span class="icon is-small is-left">
+        <i class="fas fa-map-marked"></i>
+      </span>
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="label">airConditioning</label>
+    <div class="control has-icons-left">
+      <input class="input" type="text" name="airConditioning" placeholder="4229-7600" value="{{car.airConditioning}}" />
+      <span class="icon is-small is-left">
+        <i class="fas fa-phone"></i>
+      </span>
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="label">passengers</label>
+    <div class="control has-icons-left">
+      <input class="input" type="text" name="passengers" placeholder="http://caraindependiente.com/"
+        value="{{car.passengers}}" />
+      <span class="icon is-small is-left">
+        <i class="fas fa-globe"></i>
+      </span>
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="label">price</label>
+    <div class="control has-icons-left">
+      <input class="input" type="text" name="price" placeholder="socios
+  @caraindependiente.com.ar" value="{{car.price}}" />
+      <span class="icon is-small is-left">
+        <i class="fas fa-globe"></i>
+      </span>
+    </div>
+  </div>
+  <input type="submit" class="button is-primary is-large" value="Guardar" />
+  <hr />
+</form>
+{% endblock %}
