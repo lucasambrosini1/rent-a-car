@@ -11,6 +11,12 @@ const SequelizeStore = require('connect-session-sequelize')(session.Store);
 const {
   CarController, CarService, CarRepository, CarModel,
 } = require('../module/car/module');
+const {
+  UserController, UserService, UserRepository, UserModel,
+} = require('../module/user/module');
+const {
+  ReservationController, ReservationService, ReservationRepository, ReservationModel,
+} = require('../module/reservation/module');
 
 function configureMainSequelizeDatabase() {
   const sequelize = new Sequelize({
@@ -39,6 +45,23 @@ function configureCarModel(container) {
 /**
  * @param {DIContainer} container
  */
+function configureUserModel(container) {
+  UserModel.setup(container.get('Sequelize'));
+  return UserModel;
+}
+
+/**
+ * @param {DIContainer} container
+ */
+function configureReservationModel(container) {
+  ReservationModel.setup(container.get('Sequelize'));
+  ReservationModel.setupAssociations(CarModel, UserModel);
+  return ReservationModel;
+}
+
+/**
+ * @param {DIContainer} container
+ */
 function configureSession(container) {
   const ONE_WEEK_IN_SECONDS = 604800000;
 
@@ -56,11 +79,9 @@ function configureSession(container) {
 function configureMulter() {
   const storage = multer.diskStorage({
     destination(req, file, cb) {
-      cb(null, process.env.CRESTS_UPLOAD_DIR);
+      cb(null, process.env.MULTER_UPLOAD_DIR);
     },
     filename(req, file, cb) {
-      // https://stackoverflow.com/questions/31592726/how-to-store-a-file-with-file-extension-with-multer
-      // al tener una extensión, el navegador lo sirve en vez de descargarlo
       cb(null, Date.now() + path.extname(file.originalname));
     },
   });
@@ -95,9 +116,33 @@ function addCarModuleDefinitions(container) {
   });
 }
 
+function addUserModuleDefinitions(container) {
+  container.add({
+    UserController: object(UserController).construct(
+      use('UserService'),
+    ),
+    UserService: object(UserService).construct(use('UserRepository')),
+    UserRepository: object(UserRepository).construct(use('UserModel')),
+    UserModel: factory(configureUserModel),
+  });
+}
+
+function addReservationModuleDefinitions(container) {
+  container.add({
+    ReservationController: object(ReservationController).construct(
+      use('ReservationService'),
+    ),
+    ReservationService: object(ReservationService).construct(use('ReservationRepository')),
+    ReservationRepository: object(ReservationRepository).construct(use('ReservationModel')),
+    ReservationModel: factory(configureReservationModel),
+  });
+}
+
 module.exports = function configureDI() {
   const container = new DIContainer();
   addCommonDefinitions(container);
   addCarModuleDefinitions(container);
+  addUserModuleDefinitions(container);
+  addReservationModuleDefinitions(container);
   return container;
 };

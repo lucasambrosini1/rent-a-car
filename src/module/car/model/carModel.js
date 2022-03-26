@@ -1,4 +1,4 @@
-const { Sequelize, Model, DataTypes } = require('sequelize');
+const { Model, DataTypes } = require('sequelize');
 
 module.exports = class CarModel extends Model {
   /**
@@ -17,45 +17,43 @@ module.exports = class CarModel extends Model {
         },
         brand: {
           type: DataTypes.STRING,
+          allowNull: false,
         },
         year: {
           type: DataTypes.INTEGER,
+          allowNull: false,
         },
         kms: {
           type: DataTypes.INTEGER,
+          allowNull: false,
         },
         photo: {
           type: DataTypes.STRING,
         },
         color: {
           type: DataTypes.STRING,
+          allowNull: false,
         },
         airConditioning: {
           type: DataTypes.BOOLEAN,
+          allowNull: false,
         },
         passengers: {
           type: DataTypes.INTEGER,
+          allowNull: false,
         },
         price: {
           type: DataTypes.DECIMAL,
-        },
-        lastUpdated: {
-          type: DataTypes.DATE,
-          defaultValue: Sequelize.NOW,
-        },
-        createdAt: {
-          type: DataTypes.DATE,
-          defaultValue: Sequelize.NOW,
-        },
-        updatedAt: {
-          type: DataTypes.DATE,
-          defaultValue: Sequelize.NOW,
+          allowNull: false,
         },
       },
       {
         sequelize: sequelizeInstance,
         modelName: 'Car',
+        tablename: 'cars',
         timestamps: false,
+        underscored: true,
+        paranoid: true,
       },
     );
 

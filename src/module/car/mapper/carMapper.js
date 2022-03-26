@@ -5,6 +5,33 @@ const Car = require('../entity/car');
  * @param {Object} formData
  * @returns Car
  */
+
+function fromDataToEntity({
+  id,
+  brand,
+  year,
+  kms,
+  photo,
+  color,
+  airConditioning,
+  passengers,
+  transmission,
+  price,
+
+}) {
+  return new Car({
+    id,
+    brand,
+    year,
+    kms,
+    photo,
+    color,
+    airConditioning,
+    passengers,
+    transmission,
+    price,
+  });
+}
 function fromModelToEntity({
   id,
   brand,
@@ -23,14 +50,14 @@ function fromModelToEntity({
   return new Car({
     id: Number(id),
     brand,
-    year,
-    kms,
+    year: Number(year),
+    kms: Number(kms),
     photo,
     color,
     airConditioning,
-    passengers,
+    passengers: Number(passengers),
     transmission,
-    price,
+    price: Number(price),
     createdAt,
     updatedAt,
     deletedAt,
@@ -39,4 +66,5 @@ function fromModelToEntity({
 
 module.exports = {
   fromModelToEntity,
+  fromDataToEntity,
 };

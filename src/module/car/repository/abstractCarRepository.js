@@ -19,9 +19,9 @@ module.exports = class AbstractCarRepository {
   async save(car) {}
 
   /**
-   * @param {Number} id
+   * @param {Number} car
    */
-  async delete(id) {}
+  async delete(car) {}
 
   /**
    * @param {Number} id

@@ -1,0 +1,107 @@
+{% extends 'view/layout/base.html' %}
+
+{% block body %}
+{% set user = data.user %}
+
+<div class="level-left">
+  <div class="level-item">
+    <h1 class="title is-1">
+      {{"Editando user ID: " + user.id if user.id else "Nuevo user"}}
+    </h1>
+  </div>
+  <div class="level-item">
+    <span><a class="button is-link" href="/user">Cancelar</a></span>
+  </div>
+</div>
+
+<hr />
+
+<form action="/user/save" method="POST" enctype="multipart/form-data">
+  <input type="hidden" name="id" value="{{user.id}}" readonly />
+
+  <div class="field">
+    <label class="label">name</label>
+    <div class="control has-icons-left">
+      <input class="input" type="text" name="name" placeholder="FIAT" value="{{user.name}}" />
+      <span class="icon is-small is-left">
+        <i class="fas fa-signature"></i>
+      </span>
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="label">lastname</label>
+    <div class="control has-icons-left">
+      <input class="input" type="number" name="lastname" placeholder="2019" value="{{user.lastname}}" />
+      <span class="icon is-small is-left">
+        <i class="fas fa-compress"></i>
+      </span>
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="label">documentType</label>
+    <div class="control has-icons-left">
+      <input class="input" type="text" name="documentType" placeholder="10000" value="{{user.documentType}}" />
+      <span class="icon is-small is-left">
+        <i class="fas fa-compress"></i>
+      </span>
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="label">document</label>
+    <div class="control has-icons-left">
+      <input class="input" type="text" name="document" placeholder="Red"
+        value="{{user.document}}" />
+      <span class="icon is-small is-left">
+        <i class="fas fa-map-marked"></i>
+      </span>
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="label">adress</label>
+    <div class="control has-icons-left">
+      <input class="input" type="text" name="adress" placeholder="True or False" value="{{user.adress}}" />
+      <span class="icon is-small is-left">
+        <i class="fas fa-phone"></i>
+      </span>
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="label">mails</label>
+    <div class="control has-icons-left">
+      <input class="input" type="text" name="mails" placeholder="4"
+        value="{{user.mails}}" />
+      <span class="icon is-small is-left">
+        <i class="fas fa-globe"></i>
+      </span>
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="label">nationality</label>
+    <div class="control has-icons-left">
+      <input class="input" type="text" name="nationality" placeholder="100" value="{{user.nationality}}" />
+      <span class="icon is-small is-left">
+        <i class="fas fa-globe"></i>
+      </span>
+    </div>
+  </div>
+  <div class="field">
+    <label class="label">dateOfBirth</label>
+    <div class="control has-icons-left">
+      <input class="input" type="text" name="dateOfBirth" placeholder="4"
+        value="{{user.dateOfBirth}}" />
+      <span class="icon is-small is-left">
+        <i class="fas fa-globe"></i>
+      </span>
+    </div>
+  </div>
+  </div>
+  <input type="submit" class="button is-primary is-large" value="Guardar" />
+  <hr />
+</form>
+{% endblock %}

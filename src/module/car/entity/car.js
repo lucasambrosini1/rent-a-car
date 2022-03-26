@@ -10,9 +10,9 @@ module.exports = class Car {
     passengers,
     transmission,
     price,
-    createdAt,
-    updatedAt,
-    deletedAt,
+    createdAt = null,
+    updatedAt = null,
+    deletedAt = null,
   }) {
     this.id = id;
     this.brand = brand;
@@ -26,6 +26,6 @@ module.exports = class Car {
     this.price = price;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
-    this.deletedA = deletedAt;
+    this.deletedAt = deletedAt;
   }
 };

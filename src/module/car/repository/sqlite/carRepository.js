@@ -21,7 +21,6 @@ module.exports = class CarRepository extends AbstractCarRepository {
 
     const buildOptions = { isNewRecord: !car.id };
     carModel = this.carModel.build(car, buildOptions);
-    carModel.setDataValue('area_id', car.Area.id);
     carModel = await carModel.save();
 
     return fromModelToEntity(carModel);
@@ -36,7 +35,7 @@ module.exports = class CarRepository extends AbstractCarRepository {
       throw new CarIdNotDefinedError();
     }
 
-    return Boolean(await this.CarModel.destroy({ where: { id: car.id } }));
+    return Boolean(await this.carModel.destroy({ where: { id: car.id } }));
   }
 
   /**
@@ -49,7 +48,7 @@ module.exports = class CarRepository extends AbstractCarRepository {
     });
 
     if (!carModel) {
-      throw new CarNotFoundError(`No se encontró car con id ${id}`);
+      throw new CarNotFoundError(`Car with ID: ${id} has not been found`);
     }
 
     return fromModelToEntity(carModel);

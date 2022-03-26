@@ -1,15 +1,15 @@
 /**
- * @typedef {import('../repository/abstractClubRepository')} AbstractClubRepository
+ * @typedef {import('../repository/abstractCarRepository')} AbstractCarRepository
  */
 
 const CarNotDefinedError = require('./error/carNotDefinedError');
 const CarIdNotDefinedError = require('./error/carIdNotDefinedError');
 const Car = require('../entity/car');
 
-module.exports = class Service {
+module.exports = class carService {
   /**
     *
-    * @param {AbstractClubRepository} carRepository
+    * @param {AbstractCarRepository} carRepository
     */
   constructor(carRepository) {
     this.carRepository = carRepository;
