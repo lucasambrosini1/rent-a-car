@@ -9,6 +9,7 @@ module.exports = class User {
     mail,
     nationality,
     dateOfBirth,
+    reservations,
     lastUpdated,
     createdAt,
     updatedAt,
@@ -22,6 +23,7 @@ module.exports = class User {
     this.mail = mail;
     this.nationality = nationality;
     this.dateOfBirth = dateOfBirth;
+    this.reservations = reservations;
     this.lastUpdated = lastUpdated;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;

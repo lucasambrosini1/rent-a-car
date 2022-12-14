@@ -37,8 +37,7 @@ module.exports = class CarController extends AbstractController {
   async index(req, res) {
     const cars = await this.carService.getAll();
     const { errors, messages } = req.session;
-    // res.render('car/view/index.html', { data: { cars }, messages, errors });
-    res.json(cars, messages, errors);
+    res.status(200).json(cars, messages, errors);
     req.session.errors = [];
     req.session.messages = [];
   }
@@ -55,11 +54,9 @@ module.exports = class CarController extends AbstractController {
 
     try {
       const car = await this.carService.getById(id);
-      // res.render('car/view/form.html', { data: { car } });
-      res.json(car);
+      res.status(200).json(car);
     } catch (e) {
       req.session.errors = [e.message];
-      // res.redirect('/car');
       res.json(req.session.errors);
     }
   }
@@ -81,11 +78,9 @@ module.exports = class CarController extends AbstractController {
       } else {
         req.session.messages = [`The car with ID:${savedCar.id} has been created`];
       }
-      // res.redirect('/car');
-      res.json(req.session.messages);
+      res.status(201).json(req.session.messages);
     } catch (e) {
       req.session.errors = [e.message, e.stack];
-      // res.redirect('/car');
       res.json(req.session.errors);
     }
   }
@@ -100,11 +95,10 @@ module.exports = class CarController extends AbstractController {
       const car = await this.carService.getById(id);
       await this.carService.delete(car);
       req.session.messages = [`The car ID: ${id} (${car.name}) has been deleted`];
-      res.json(req.session.messages);
+      res.status(202).json(req.session.messages);
     } catch (e) {
       req.session.errors = [e.message];
       res.json(req.session.errors);
     }
-    // res.redirect('/car');
   }
 };

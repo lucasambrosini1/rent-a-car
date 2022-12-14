@@ -20,7 +20,7 @@ initUserModule(app, container);
 initReservationModule(app, container);
 
 /**
- * @type {import('./module/club/controller/clubController')} controller;
+ * @type {import('./module/reservation/controller/clubController')} controller;
  */
 const reservationController = container.get('ReservationController');
 

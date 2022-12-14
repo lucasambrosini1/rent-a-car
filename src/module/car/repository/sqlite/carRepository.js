@@ -7,9 +7,10 @@ module.exports = class CarRepository extends AbstractCarRepository {
   /**
      * @param {typeof import('../../model/carModel')} carModel
      */
-  constructor(carModel) {
+  constructor(carModel, reservationModel) {
     super();
     this.carModel = carModel;
+    this.reservationModel = reservationModel;
   }
 
   /**
@@ -45,6 +46,7 @@ module.exports = class CarRepository extends AbstractCarRepository {
   async getById(id) {
     const carModel = await this.carModel.findOne({
       where: { id },
+      include: { model: this.reservationModel },
     });
 
     if (!carModel) {
@@ -58,7 +60,7 @@ module.exports = class CarRepository extends AbstractCarRepository {
      * @return {Promise<Array<import('../../entity/car')>>}
      */
   async getAll() {
-    const cars = await this.carModel.findAll();
+    const cars = await this.carModel.findAll({ include: { model: this.reservationModel } });
     return cars.map(fromModelToEntity);
   }
 };

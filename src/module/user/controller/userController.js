@@ -40,11 +40,9 @@ module.exports = class UserController extends AbstractController {
   async index(req, res) {
     try {
       const users = await this.userService.getAll();
-      // res.render('user/view/form.html', { data: { user } });
       res.json(users);
     } catch (e) {
       req.session.errors = [e.message];
-      // res.redirect('/user');
       res.json(e.message);
     }
   }
@@ -56,11 +54,9 @@ module.exports = class UserController extends AbstractController {
     }
     try {
       const user = await this.userService.getById(id);
-      // res.render('user/view/form.html', { data: { user } });
       res.json(user);
     } catch (e) {
       req.session.errors = [e.message];
-      // res.redirect('/user');
       res.json(e.message);
     }
   }
@@ -78,11 +74,9 @@ module.exports = class UserController extends AbstractController {
       } else {
         req.session.messages = [`The user with ID:${savedUser.id} (${savedUser.name}) has been created`];
       }
-      // res.redirect('/user');
       res.json(req.session.messages);
     } catch (e) {
       req.session.errors = [e.message, e.stack];
-      // res.redirect('/user');
       res.json(req.session.errors);
     }
   }
