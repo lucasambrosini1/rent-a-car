@@ -28,6 +28,7 @@ module.exports = class ReservationController extends AbstractController {
     app.post(`${ROUTE}/save`, this.save.bind(this));
     app.get(`${ROUTE}/delete/:id`, this.delete.bind(this));
     app.post(`${ROUTE}/pay/:id`, this.pay.bind(this));
+    app.post(`${ROUTE}/finish/:id`, this.finish.bind(this));
   }
 
   async create(req, res, next) {
@@ -41,13 +42,7 @@ module.exports = class ReservationController extends AbstractController {
       if (!users.length) {
         throw new ReservationError('There are not users created');
       }
-
-      /*  res.render(`${this.RESERVATION_VIEWS}/form.html`, {
-        cars,
-        users,
-      }); */
-
-      res.json(cars, users);
+      res.status(200).json(cars, users);
     } catch (e) {
       next(e);
     }
@@ -64,11 +59,9 @@ module.exports = class ReservationController extends AbstractController {
       }
       req.session.errors = [];
       req.session.messages = [];
-      // res.render('reservation/view/index.html', { data: { reservations }, messages, errors });
-      res.json(reservations, messages, errors);
+      res.status(200).json(reservations, messages, errors);
     } catch (e) {
       req.session.errors = [e.message];
-      // res.redirect('/reservation');
       res.json(e.message);
     }
   }
@@ -80,11 +73,9 @@ module.exports = class ReservationController extends AbstractController {
     }
     try {
       const reservation = await this.reservationService.getById(id);
-      // res.render('reservation/view/form.html', { data: { reservation } });
-      res.json(reservation);
+      res.status(200).json(reservation);
     } catch (e) {
       req.session.errors = [e.message];
-      // res.redirect('/reservation');
       res.json(req.session.errors);
     }
   }
@@ -98,11 +89,9 @@ module.exports = class ReservationController extends AbstractController {
       } else {
         req.session.messages = [`The reservation ID:$${savedReservation.id} has been created`];
       }
-      // res.redirect('/reservation');
       res.json(req.session.messages);
     } catch (e) {
       req.session.errors = [e.message, e.stack];
-      // res.redirect('/reservation');
       res.json(req.session.errors);
     }
   }
@@ -113,22 +102,32 @@ module.exports = class ReservationController extends AbstractController {
       const reservation = await this.reservationService.getById(id);
       await this.reservationService.delete(reservation);
       req.session.messages = [`The reservation ID: ${id} has been deleted`];
-      res.json(req.session.messages);
+      res.status(202).json(req.session.messages);
     } catch (e) {
       req.session.errors = [e.message];
       res.json(req.session.errors);
     }
-    // res.redirect('/reservation');
-    // res.status(404).json(req.session.messages, req.session.errors);
   }
 
   async pay(req, res) {
     try {
       const { id } = req.params;
-      const user = await this.reservationService.getById(id);
-      user.isPaid = true;
-      await this.reservationService.save(user);
-      res.json(`The reservation with ID: ${id} has been payed`);
+      const reservation = await this.reservationService.getById(id);
+      reservation.changePaymentStatus('PAID');
+      await this.reservationService.save(reservation);
+      res.json(`The reservation with ID: ${id} has been paid`);
+    } catch (e) {
+      res.json(e.message);
+    }
+  }
+
+  async finish(req, res) {
+    try {
+      const { id } = req.params;
+      const reservation = await this.reservationService.getById(id);
+      reservation.changePaymentStatus('FINISHED');
+      await this.reservationService.save(reservation);
+      res.json(`The reservation with ID: ${id} has been finished`);
     } catch (e) {
       res.json(e.message);
     }

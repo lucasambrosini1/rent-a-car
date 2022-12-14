@@ -8,9 +8,10 @@ module.exports = class UserRepository extends AbstractUserRepository {
      * @param {typeof import('../../model/carModel')} userModel
      */
 
-  constructor(userModel) {
+  constructor(userModel, reservationModel) {
     super();
     this.userModel = userModel;
+    this.reservationModel = reservationModel;
   }
 
   /**
@@ -48,11 +49,13 @@ module.exports = class UserRepository extends AbstractUserRepository {
   async getById(id) {
     const userModel = await this.userModel.findOne({
       where: { id },
+      include: { model: this.reservationModel },
     });
 
     if (!userModel) {
       throw new UserNotFoundError(`User with ID: ${id} has not been found`);
     }
+
     return fromModelToEntity(userModel);
   }
 

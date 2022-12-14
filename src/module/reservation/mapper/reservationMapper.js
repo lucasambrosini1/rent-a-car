@@ -6,10 +6,11 @@ function fromDataToEntity({
   carId,
   dayPrice,
   startDate,
+  car,
+  user,
   finishedDate,
-  totalPrice,
   paymentMethod,
-  isPaid,
+  paymentStatus,
 }) {
   return new Reservation({
     id,
@@ -17,42 +18,20 @@ function fromDataToEntity({
     carId,
     dayPrice,
     startDate,
+    car,
+    user,
     finishedDate,
-    totalPrice,
     paymentMethod,
-    isPaid,
+    paymentStatus,
 
   });
 }
 
-function fromModelToEntity({
-  id,
-  userId,
-  carId,
-  dayPrice,
-  startDate,
-  finishedDate,
-  totalPrice,
-  paymentMethod,
-  isPaid,
-  createdAt,
-  updatedAt,
-  deletedAt,
-}) {
-  return new Reservation({
-    id: Number(id),
-    userId: Number(userId),
-    carId: Number(carId),
-    dayPrice,
-    startDate,
-    finishedDate,
-    totalPrice,
-    paymentMethod,
-    isPaid,
-    createdAt,
-    updatedAt,
-    deletedAt,
-  });
+function fromModelToEntity(model) {
+  const reservation = model.toJSON();
+  reservation.user = model.User;
+  reservation.car = model.Car;
+  return new Reservation(reservation);
 }
 
 module.exports = {
