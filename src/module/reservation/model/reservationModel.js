@@ -39,8 +39,8 @@ module.exports = class ReservationModel extends Model {
           type: DataTypes.STRING,
           allowNull: false,
         },
-        isPaid: {
-          type: DataTypes.BOOLEAN,
+        paymentStatus: {
+          type: DataTypes.STRING,
           allowNull: false,
 
         },
@@ -58,9 +58,11 @@ module.exports = class ReservationModel extends Model {
   }
 
   static setupAssociations(CarModel, UserModel) {
-    CarModel.hasMany(ReservationModel, { foreignKey: 'carId', constraints: true });
-    ReservationModel.belongsTo(CarModel, { foreignKey: 'carId', constraints: true });
-    UserModel.hasMany(ReservationModel, { foreignKey: 'userId', constraints: true });
-    ReservationModel.belongsTo(UserModel, { foreignKey: 'userId', constraints: true });
+    CarModel.hasMany(ReservationModel, { foreignKey: 'carId', constraints: false });
+    ReservationModel.belongsTo(CarModel, { foreignKey: 'carId', constraints: false });
+    UserModel.hasMany(ReservationModel, { foreignKey: 'userId', constraints: false });
+    ReservationModel.belongsTo(UserModel, { foreignKey: 'userId', constraints: false });
+
+    return ReservationModel;
   }
 };

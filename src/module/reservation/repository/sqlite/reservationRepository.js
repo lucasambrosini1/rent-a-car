@@ -4,9 +4,11 @@ const ReservationNotFoundError = require('../error/reservationNotFoundError');
 const ReservationIdNotDefinedError = require('../error/reservationIdNotDefinedError');
 
 module.exports = class reservationRepository extends AbstractReservationRepository {
-  constructor(reservationModel) {
+  constructor(reservationModel, carModel, userModel) {
     super();
     this.reservationModel = reservationModel;
+    this.carModel = carModel;
+    this.userModel = userModel;
   }
 
   async save(reservation) {
@@ -26,16 +28,27 @@ module.exports = class reservationRepository extends AbstractReservationReposito
   }
 
   async getById(id) {
-    const reservationModel = await this.reservationModel.findOne({ where: { id } });
+    const reservationModel = await this.reservationModel.findOne({
+      where: { id },
+      include: [
+        { model: this.carModel },
+        { model: this.userModel }]
+      ,
+    });
 
     if (!reservationModel) {
       throw new ReservationNotFoundError(`Reservation with ID: ${id} has not been found`);
     }
+
     return fromModelToEntity(reservationModel);
   }
 
   async getAll() {
-    const reservations = await this.reservationModel.findAll();
+    const reservations = await this.reservationModel.findAll({
+      include: [
+        { model: this.carModel },
+        { model: this.userModel }],
+    });
     return reservations.map(fromModelToEntity);
   }
 };

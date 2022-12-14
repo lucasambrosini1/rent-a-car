@@ -10,6 +10,7 @@ module.exports = class Car {
     passengers,
     transmission,
     price,
+    reservations,
     createdAt = null,
     updatedAt = null,
     deletedAt = null,
@@ -24,6 +25,7 @@ module.exports = class Car {
     this.passengers = passengers;
     this.transmission = transmission;
     this.price = price;
+    this.reservations = reservations;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
     this.deletedAt = deletedAt;

@@ -32,36 +32,10 @@ function fromDataToEntity({
     price,
   });
 }
-function fromModelToEntity({
-  id,
-  brand,
-  year,
-  kms,
-  photo,
-  color,
-  airConditioning,
-  passengers,
-  transmission,
-  price,
-  createdAt,
-  updatedAt,
-  deletedAt,
-}) {
-  return new Car({
-    id: Number(id),
-    brand,
-    year: Number(year),
-    kms: Number(kms),
-    photo,
-    color,
-    airConditioning,
-    passengers: Number(passengers),
-    transmission,
-    price: Number(price),
-    createdAt,
-    updatedAt,
-    deletedAt,
-  });
+function fromModelToEntity(model) {
+  const car = model.toJSON();
+  car.reservations = model.Reservations;
+  return new Car(car);
 }
 
 module.exports = {

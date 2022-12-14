@@ -38,25 +38,21 @@ function configureSessionSequelizeDatabase() {
  * @param {DIContainer} container
  */
 function configureCarModel(container) {
-  CarModel.setup(container.get('Sequelize'));
-  return CarModel;
+  return CarModel.setup(container.get('Sequelize'));
 }
 
 /**
  * @param {DIContainer} container
  */
 function configureUserModel(container) {
-  UserModel.setup(container.get('Sequelize'));
-  return UserModel;
+  return UserModel.setup(container.get('Sequelize'));
 }
 
 /**
  * @param {DIContainer} container
  */
 function configureReservationModel(container) {
-  ReservationModel.setup(container.get('Sequelize'));
-  ReservationModel.setupAssociations(CarModel, UserModel);
-  return ReservationModel;
+  return ReservationModel.setup(container.get('Sequelize'));
 }
 
 /**
@@ -111,7 +107,7 @@ function addCarModuleDefinitions(container) {
       use('CarService'),
     ),
     CarService: object(CarService).construct(use('CarRepository')),
-    CarRepository: object(CarRepository).construct(use('CarModel')),
+    CarRepository: object(CarRepository).construct(use('CarModel'), use('ReservationModel')),
     CarModel: factory(configureCarModel),
   });
 }
@@ -122,7 +118,7 @@ function addUserModuleDefinitions(container) {
       use('UserService'),
     ),
     UserService: object(UserService).construct(use('UserRepository')),
-    UserRepository: object(UserRepository).construct(use('UserModel')),
+    UserRepository: object(UserRepository).construct(use('UserModel'), use('ReservationModel')),
     UserModel: factory(configureUserModel),
   });
 }
@@ -133,9 +129,16 @@ function addReservationModuleDefinitions(container) {
       use('ReservationService'),
     ),
     ReservationService: object(ReservationService).construct(use('ReservationRepository')),
-    ReservationRepository: object(ReservationRepository).construct(use('ReservationModel')),
+    ReservationRepository: object(ReservationRepository).construct(use('ReservationModel'), use('CarModel'), use('UserModel')),
     ReservationModel: factory(configureReservationModel),
   });
+}
+
+function setupAssociations(container) {
+  const carModel = container.get('CarModel');
+  const userModel = container.get('UserModel');
+  const reservationModel = container.get('ReservationModel');
+  reservationModel.setupAssociations(carModel, userModel);
 }
 
 module.exports = function configureDI() {
@@ -144,5 +147,6 @@ module.exports = function configureDI() {
   addCarModuleDefinitions(container);
   addUserModuleDefinitions(container);
   addReservationModuleDefinitions(container);
+  setupAssociations(container);
   return container;
 };
