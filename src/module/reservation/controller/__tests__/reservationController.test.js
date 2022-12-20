@@ -8,7 +8,6 @@ const serviceMock = {
   save: jest.fn((reservation) => createTestReservation(reservation.id)),
   getAll: jest.fn(() => Array.from({ length: 3 }, (id) => createTestReservation(id + 1))),
   getById: jest.fn((id) => createTestReservation(id)),
-  getLastReservation: jest.fn(() => createTestReservation(3)),
   delete: jest.fn(),
 };
 

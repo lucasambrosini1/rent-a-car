@@ -6,7 +6,6 @@ const serviceMock = {
   save: jest.fn((car) => createTestCar(car.id)),
   getAll: jest.fn(() => Array.from({ length: 3 }, (id) => createTestCar(id + 1))),
   getById: jest.fn((id) => createTestCar(id)),
-  getLastCar: jest.fn(() => createTestCar(3)),
   delete: jest.fn(),
 };
 
