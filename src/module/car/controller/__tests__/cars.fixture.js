@@ -1,6 +1,6 @@
 const Car = require('../../entity/car');
 
-module.exports = function createTestCar(id) {
+module.exports = function createTestCar(id = undefined) {
   return new Car(
     {
       id,

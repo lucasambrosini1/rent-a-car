@@ -42,7 +42,7 @@ module.exports = class ReservationController extends AbstractController {
       if (!users.length) {
         throw new ReservationError('There are not users created');
       }
-      res.status(200).json(cars, users);
+      res.json(cars, users);
     } catch (e) {
       next(e);
     }
@@ -59,7 +59,7 @@ module.exports = class ReservationController extends AbstractController {
       }
       req.session.errors = [];
       req.session.messages = [];
-      res.status(200).json(reservations, messages, errors);
+      res.json(reservations, messages, errors);
     } catch (e) {
       req.session.errors = [e.message];
       res.json(e.message);
@@ -73,7 +73,7 @@ module.exports = class ReservationController extends AbstractController {
     }
     try {
       const reservation = await this.reservationService.getById(id);
-      res.status(200).json(reservation);
+      res.json(reservation);
     } catch (e) {
       req.session.errors = [e.message];
       res.json(req.session.errors);
@@ -87,7 +87,7 @@ module.exports = class ReservationController extends AbstractController {
       if (reservation.id) {
         req.session.messages = [`The reservation ID:${reservation.id} has been updated`];
       } else {
-        req.session.messages = [`The reservation ID:$${savedReservation.id} has been created`];
+        req.session.messages = [`The reservation ID:${savedReservation.id} has been created`];
       }
       res.json(req.session.messages);
     } catch (e) {
@@ -102,7 +102,8 @@ module.exports = class ReservationController extends AbstractController {
       const reservation = await this.reservationService.getById(id);
       await this.reservationService.delete(reservation);
       req.session.messages = [`The reservation ID: ${id} has been deleted`];
-      res.status(202).json(req.session.messages);
+      res.status(202);
+      res.json(req.session.messages);
     } catch (e) {
       req.session.errors = [e.message];
       res.json(req.session.errors);

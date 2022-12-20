@@ -28,6 +28,9 @@ module.exports = class reservationRepository extends AbstractReservationReposito
   }
 
   async getById(id) {
+    if (!id) {
+      throw new ReservationIdNotDefinedError();
+    }
     const reservationModel = await this.reservationModel.findOne({
       where: { id },
       include: [

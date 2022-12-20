@@ -19,15 +19,10 @@ module.exports = class CarController extends AbstractController {
    */
   configureRoutes(app) {
     const ROUTE = this.ROUTE_BASE;
-    app.get(`${ROUTE}/create`, this.create.bind(this));
     app.get(`${ROUTE}`, this.index.bind(this));
     app.get(`${ROUTE}/view/:id`, this.view.bind(this));
     app.post(`${ROUTE}/save`, this.uploadMiddleware.single('photo'), this.save.bind(this));
     app.get(`${ROUTE}/delete/:id`, this.delete.bind(this));
-  }
-
-  create(req, res) {
-    res.render(`${this.CAR_VIEWS}/form.html`);
   }
 
   /**
@@ -37,7 +32,7 @@ module.exports = class CarController extends AbstractController {
   async index(req, res) {
     const cars = await this.carService.getAll();
     const { errors, messages } = req.session;
-    res.status(200).json(cars, messages, errors);
+    res.json(cars, messages, errors);
     req.session.errors = [];
     req.session.messages = [];
   }
@@ -54,7 +49,7 @@ module.exports = class CarController extends AbstractController {
 
     try {
       const car = await this.carService.getById(id);
-      res.status(200).json(car);
+      res.json(car);
     } catch (e) {
       req.session.errors = [e.message];
       res.json(req.session.errors);
@@ -78,7 +73,8 @@ module.exports = class CarController extends AbstractController {
       } else {
         req.session.messages = [`The car with ID:${savedCar.id} has been created`];
       }
-      res.status(201).json(req.session.messages);
+      res.status(201);
+      res.json(req.session.messages);
     } catch (e) {
       req.session.errors = [e.message, e.stack];
       res.json(req.session.errors);
@@ -94,8 +90,9 @@ module.exports = class CarController extends AbstractController {
       const { id } = req.params;
       const car = await this.carService.getById(id);
       await this.carService.delete(car);
-      req.session.messages = [`The car ID: ${id} (${car.name}) has been deleted`];
-      res.status(202).json(req.session.messages);
+      req.session.messages = [`The car ID: ${id} has been deleted`];
+      res.status(202);
+      res.json(req.session.messages);
     } catch (e) {
       req.session.errors = [e.message];
       res.json(req.session.errors);

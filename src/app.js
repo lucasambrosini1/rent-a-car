@@ -26,4 +26,9 @@ const reservationController = container.get('ReservationController');
 
 app.get('/', reservationController.index.bind(reservationController));
 
+app.use((err, req, res, next) => {
+  res.status(500);
+  res.json(err);
+});
+
 app.listen(port, () => console.log(`Server listening at http://localhost:${port}`));
