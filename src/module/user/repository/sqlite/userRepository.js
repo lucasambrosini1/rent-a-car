@@ -40,13 +40,15 @@ module.exports = class UserRepository extends AbstractUserRepository {
 
     return Boolean(await this.userModel.destroy({ where: { id } }));
   }
-
   /**
      * @param {Number} id
      * @returns {Promise<import('../../entity/user')>}
      */
 
   async getById(id) {
+    if (!id) {
+      throw new UserIdNotDefinedError();
+    }
     const userModel = await this.userModel.findOne({
       where: { id },
       include: { model: this.reservationModel },

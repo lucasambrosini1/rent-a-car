@@ -2,6 +2,7 @@ const { fromModelToEntity } = require('../../mapper/carMapper');
 const AbstractCarRepository = require('../abstractCarRepository');
 const CarNotFoundError = require('../error/carNotFoundError');
 const CarIdNotDefinedError = require('../error/carIdNotDefinedError');
+const Car = require('../../entity/Car');
 
 module.exports = class CarRepository extends AbstractCarRepository {
   /**
@@ -44,6 +45,9 @@ module.exports = class CarRepository extends AbstractCarRepository {
      * @returns {Promise<import('../../entity/car')>}
      */
   async getById(id) {
+    if (!id) {
+      throw new CarIdNotDefinedError();
+    }
     const carModel = await this.carModel.findOne({
       where: { id },
       include: { model: this.reservationModel },

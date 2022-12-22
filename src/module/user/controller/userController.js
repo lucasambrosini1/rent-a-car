@@ -19,18 +19,10 @@ module.exports = class UserController extends AbstractController {
    */
   configureRoutes(app) {
     const ROUTE = this.ROUTE_BASE;
-    app.get(`${ROUTE}`, this.index.bind(this));
+    app.get(`${ROUTE}/`, this.index.bind(this));
     app.get(`${ROUTE}/view/:id`, this.view.bind(this));
     app.post(`${ROUTE}/save`, this.save.bind(this));
     app.get(`${ROUTE}/delete/:id`, this.delete.bind(this));
-  }
-  /**
-   * @param {import('express').Request} req
-   * @param {import('express').Response} res
-   */
-
-  create(req, res) {
-    res.render(`${this.USER_VIEWS}/form.html`);
   }
 
   /**
